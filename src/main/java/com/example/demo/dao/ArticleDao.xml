@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.ArticleDao">
+	
+	<insert id="writeArticle">
+		insert into article
+			set regDate = now()
+				, updateDate = now()
+				, memberId = #{loginedMemberId}
+				, boardId = #{boardId}
+				, title = #{title} 
+				, `body` = #{body} 
+	</insert>	
+	
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	<select id="getArticleById" resultType="Article">
+		select *
+			from article
+			where id = #{id}
+	</select> 
+	
+	<select id="getForPrintArticle" resultType="Article">
+		select a.*
+				, m.nickname as `writer`
+			from article as a
+			inner join `member` as m
+			on a.memberId = m.id
+			where a.id = #{id}
+	</select> 
+    
+	<select id="getArticles" resultType="Article">
+		SELECT a.*
+	        	, m.nickname AS `writer`
+	    	FROM article AS a
+	    	INNER JOIN `member` AS m
+		    ON a.memberId = m.id
+		    where 1 = 1
+		    <if test="boardId != 0">
+				and a.boardId = #{boardId } 
+			</if>
+		    ORDER BY id DESC
+	</select>
+	
+	<update id="modifyArticle" >
+		update article
+			<set>
+				updateDate = now()
+				<if test="title != null and title != ''">
+					, title = #{title}
+				</if>
+				<if test="body != null and body != ''">
+					, `body` = #{body}
+				</if>
+			</set> 
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteArticle">
+		delete from article
+			where id = #{id}
+	</delete>
+	
+	<select id="getArticlesCnt" resultType="int">
+		SELECT COUNT(id)
+			FROM article
+			WHERE boardId = #{boardId}
+	</select>
+	
+</mapper>
