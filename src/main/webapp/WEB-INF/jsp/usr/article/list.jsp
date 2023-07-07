@@ -7,8 +7,22 @@
 
 	<section class="mt-8">
 		<div class="container mx-auto">
-			<div class="mb-2">
-				<span>총 : ${articlesCnt }개</span>
+			<div class="flex justify-between items-center mb-2">
+				<div>
+					<span>총 : ${articlesCnt }개</span>
+				</div>
+				<div>
+					<form>
+						<input type="hidden" name="boardId" value="${board.id }"/>
+						<select data-value="${searchKeywordType }" name="searchKeywordType">
+							<option value="title">제목</option>
+							<option value="body">내용</option>
+							<option value="title,body">제목+내용</option>
+						</select>
+						<input type="text" name="searchKeyword" placeholder="검색어를 입력해주세요." value="${searchKeyword }"/>
+						<button>검색</button>
+					</form>
+				</div>
 			</div>
 			<div class="table-box-type-1">
 				<table class="table">
@@ -40,26 +54,27 @@
 				<c:set var="pageMenuLen" value="5" />
 				<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1 }" />
 				<c:set var="endPage" value="${page + pageMenuLen <= pagesCnt ? page + pageMenuLen : pagesCnt }" />
+				<c:set var="pageBaseUri" value="?boardId=${board.id }&searchKeywordType=${searchKeywordType }&searchKeyword=${searchKeyword }" />
 				<div class="join mt-1 flex justify-center">
 					<div>
 						<c:if test="${page == 1 }">
-							<a class="join-item btn btn-disabled" href="?boardId=${board.id }&page=1">«</a>
-							<a class="join-item btn btn-disabled" href="?boardId=${board.id }&page=${page - 1 }" >&lt;</a>
+							<a class="join-item btn btn-disabled">«</a>
+							<a class="join-item btn btn-disabled">&lt;</a>
 						</c:if>
 						<c:if test="${page > 1 }">
-							<a class="join-item btn" href="?boardId=${board.id }&page=1">«</a>
-							<a class="join-item btn" href="?boardId=${board.id }&page=${page - 1 }" >&lt;</a>
+							<a class="join-item btn" href="${pageBaseUri }&page=1">«</a>
+							<a class="join-item btn" href="${pageBaseUri }&page=${page - 1 }" >&lt;</a>
 						</c:if>
 						<c:forEach begin="${startPage }" end="${endPage }" var="i">
-							<a class="join-item btn ${page == i ? 'btn-active' : '' }" href="?boardId=${board.id }&page=${i }">${i }</a>
+							<a class="join-item btn ${page == i ? 'btn-active' : '' }" href="${pageBaseUri }&page=${i }">${i }</a>
 						</c:forEach>	
 						<c:if test="${page < pagesCnt }">
-							<a class="join-item btn" href="?boardId=${board.id }&page=${page + 1 }">&gt;</a>
-							<a class="join-item btn" href="?boardId=${board.id }&page=${pagesCnt }">»</a>
+							<a class="join-item btn" href="${pageBaseUri }&page=${page + 1 }">&gt;</a>
+							<a class="join-item btn" href="${pageBaseUri }&page=${pagesCnt }">»</a>
 						</c:if>
 						<c:if test="${page == pagesCnt }">
-							<a class="join-item btn btn-disabled" href="?boardId=${board.id }&page=${page + 1 }">&gt;</a>
-							<a class="join-item btn btn-disabled" href="?boardId=${board.id }&page=${pagesCnt }">»</a>
+							<a class="join-item btn btn-disabled">&gt;</a>
+							<a class="join-item btn btn-disabled">»</a>
 						</c:if>
 					</div>
 				</div>

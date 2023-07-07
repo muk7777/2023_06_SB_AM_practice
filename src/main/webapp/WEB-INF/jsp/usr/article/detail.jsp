@@ -41,7 +41,7 @@
 				</table>
 			</div>
 			<div> 
-				<button class="btn btn-active btn-neutral" onclick="location.replace('list?boardId=${article.boardId}');">뒤로가기</button>
+				<button class="btn btn-active btn-neutral" onclick="history.back()">뒤로가기</button>
 				
 				<c:if test="${loginedMemberId == article.memberId }">
 					<a class="btn btn-active btn-neutral" href="modify?id=${article.id}">수정</a>
