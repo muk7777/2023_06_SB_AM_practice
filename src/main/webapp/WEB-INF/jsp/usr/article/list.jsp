@@ -35,7 +35,34 @@
 					<div class="mt-1 flex justify-end">
 						<a class="btn btn-active btn-neutral" href="write">글쓰기</a>
 					</div>
-				</c:if>	
+				</c:if>
+				
+				<c:set var="pageMenuLen" value="5" />
+				<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1 }" />
+				<c:set var="endPage" value="${page + pageMenuLen <= pagesCnt ? page + pageMenuLen : pagesCnt }" />
+				<div class="join mt-1 flex justify-center">
+					<div>
+						<c:if test="${page == 1 }">
+							<a class="join-item btn btn-disabled" href="?boardId=${board.id }&page=1">«</a>
+							<a class="join-item btn btn-disabled" href="?boardId=${board.id }&page=${page - 1 }" >&lt;</a>
+						</c:if>
+						<c:if test="${page > 1 }">
+							<a class="join-item btn" href="?boardId=${board.id }&page=1">«</a>
+							<a class="join-item btn" href="?boardId=${board.id }&page=${page - 1 }" >&lt;</a>
+						</c:if>
+						<c:forEach begin="${startPage }" end="${endPage }" var="i">
+							<a class="join-item btn ${page == i ? 'btn-active' : '' }" href="?boardId=${board.id }&page=${i }">${i }</a>
+						</c:forEach>	
+						<c:if test="${page < pagesCnt }">
+							<a class="join-item btn" href="?boardId=${board.id }&page=${page + 1 }">&gt;</a>
+							<a class="join-item btn" href="?boardId=${board.id }&page=${pagesCnt }">»</a>
+						</c:if>
+						<c:if test="${page == pagesCnt }">
+							<a class="join-item btn btn-disabled" href="?boardId=${board.id }&page=${page + 1 }">&gt;</a>
+							<a class="join-item btn btn-disabled" href="?boardId=${board.id }&page=${pagesCnt }">»</a>
+						</c:if>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
